@@ -1,21 +1,32 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>sahil.project</groupId>
-  <artifactId>sahil</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>sahil Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-  <build>
-    <finalName>sahil</finalName>
-  </build>
-</project>
+      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+      <modelVersion>4.0.0</modelVersion>
+      <groupId>sahil.project</groupId>
+      <artifactId>sahil</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <packaging>war</packaging>
+      <dependencies></dependencies>
+      <parent></parent>
+      <dependencyManagement></dependencyManagement>
+      <modules></modules>
+      <properties></properties>
+      <build>war</build>
+      <reporting>target</reporting>
+      <name>icomoxgui</name>
+      <description>test</description>
+      <url>http"//maven.apache.org</url>
+      <inceptionYear></inceptionYear>
+      <licenses></licenses>
+      <organization></organization>
+      <developers>ambith</developers>
+      <contributors>ambi</contributors>
+      <issueManagement></issueManagement>
+      <ciManagement></ciManagement>
+      <mailingLists></mailingLists>
+      <scm>*****</scm>
+      <prerequisites></prerequisites>
+      <repositories></repositories>
+      <pluginRepositories></pluginRepositories>
+      <distributionManagement></distributionManagement>
+      <profiles></profiles>
+    </project>
