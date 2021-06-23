@@ -1,0 +1,297 @@
+﻿****************************************
+* Changes from version 2.7.1 to 2.8.0  *
+****************************************
+MCU:
+Known issues:
+1. Sometimes there is NACK when tries to access the magnetometer.
+2. Sometimes the magnetometer in the Z axis provides a saturation value.
+3. Can't work with the 26MHz crystal in the micro-controller (this problem is limited to the iCOMOX-SMIP).
+4. USB mode - messages sometimes do not move from the iCOMOX to the PC although they are sent. In the opposite direction, messages are transferred without a problem.
+5. iCOMOX-NB-IOT cellular transceiver never enters the off state, and keep transmits hello messgaes every 10 seconds (as a keepalive replacement)
+6. Sometimes the MCU does not respond to commands (tested over the USB channel + full sensors configuration), so read EEPROM fails
+
+Solved issues:
+1. iCOMOX-NB-IOT connectivity problems should now be solved due to many new added features for supporting cellular connectivity configurations.
+2. Now when the cellular network is congested, the iCOMOX-NB-IOT does not stop trying transmitting after a limited number of times, but continue trying forever.
+3. It took iCOMOX-PoE almost 11 minutes to reconnect the TCP/IP server in a situtation when it had no Ethernet link (e.g. cable disconnected) for long enough duration, so the TCP/IP server closes the socket meanwhile. Now it is solved.
+
+New features:
+1. New diagnostics API, right now only for iCOMOX-NB-IOT support.
+2. New bits in the iCOMOX-NB-IOT were added to the Hello message to indicate: roaming, LTE cat. M1, LTE cat. NB1.
+3. New configurations were added to the iCOMOX-NB-IOT: access technologies selection, roaming enable, APN authentication and registration service domain.
+4. Preparation for TLS support was added to the iCOMOX-NB-IOT memory map.
+5. Now the vibration motor is enabled for 0.1 seconds instead of 2 seconds on power up.
+6. Now the red LED is turned on only during the initial BIT. The complete BIT value is reported in the Hello message.
+7. Now TCP server can be URL and not only IP address.
+8. Memory map is rearranged.
+
+Suggestions for new features:
+1. There is no checksum protection in the protocol messages.
+2. Add watchdog timer and distribute a "release" version (instead of a "debug" one)
+3. Check the IPv6 support in the POE, and add it in the NB-IOT.
+4. Adding TLS layer to the POE & NB-IOT.
+
+Python:
+Known issues:
+1. Sometimes, when selecting a TCP/IP client, the yellow indication is not changed to a green one.
+
+Solved issues:
+1. Incorrect graphics due to a mix between place and grid geometery in the "Configuration" tabsheet was solved (now we use only grid geometery there).
+2. Fixed the formula to calculate the instantenuos preassure level of the recorded sound (scaling factor is divided by 32768 instead of 65535).
+3. Change the statistics of the microphone to consider a single RMS value from each microphone report (after reducing the avergae from these samples).
+4. Added input validation when reading EEPROM data from an iCOMOX.
+5. Anomaly detection buttons are now disabled when client is deselected.
+
+New features:
+1. Now the iCOMOX-SMIP appears in a list (instead of combobox) only after getting a proper Hello message from them. Their functionality is now similar to TCP/IP clients.
+2. Noise floor was added to the magnetometer graphs.
+3. INI file was added to the application.
+4. Support for the new memory map parameters for iCOMOX-NB-IOT & iCOMOX-PoE was added.
+5. List of COM ports for direct USB connection to iCOMOX or for SMIP dongle are now automatically filtered by the GUI.
+6. The EEPROM tabsheet now supports input validation as well as protection against exception causes by reading illegal EEPROM values.
+
+****************************************
+* Changes from version 2.7.0 to 2.7.1  *
+****************************************
+MCU:
+Known issues:
+1. Sometimes there is NACK when tries to access the magnetometer.
+2. Sometimes the magnetometer in the Z axis provides a saturation value.
+3. Can't work with the 26MHz crystal in the micro-controller (this problem is limited to the iCOMOX-SMIP).
+4. USB mode - messages sometimes do not move from the iCOMOX to the PC although they are sent. In the opposite direction, messages are transferred without a problem.
+5. iCOMOX-NB-IOT cellular transceiver never enters the off state, and keep transmits hello messgaes every 10 seconds (as a keepalive replacement)
+
+Solved issues:
+1. Now the iCOMOX-SMIP non longer ignores the message to set the absolute time.
+2. Now there is no numerical overflow when translating large number of minutes of the schedule report to units of ticks.
+
+Python:
+Known issues:
+None
+
+Solved issues:
+1. DTR & RTS lines are now configured to have non floating output ("0" and "1" respectively), when communicating with the SMIP dongle. It prevents problems of non responsiveness of the dongle.
+2. Fixed the formula that converts the measured "network" frequency to synchronous speed.
+
+****************************************
+* Changes from version 2.5.11 to 2.7.0 *
+****************************************
+MCU:
+Known issues:
+1. Sometimes there is NACK when tries to access the magnetometer.
+2. Sometimes the magnetometer in the Z axis provides a saturation value.
+3. Can't work with the 26MHz crystal in the micro-controller (this problem is limited to the iCOMOX-SMIP).
+4. USB mode - messages sometimes do not move from the iCOMOX to the PC although they are sent. In the opposite direction, messages are transferred without a problem.
+
+Solved issues:
+1. In the SMIP the messages received from the AUX channel are now procecssed in the main thread, and not in the interrupt context.
+2. Now the iCOMOX-SMIP uses the RTC1 as a central clock source (as the NB-IOT & POE do), and not only for its SMIP management state machine.
+3. The minimum delay between sending packets in SMIP mode was now reduced to the time given by the SMIP IC (and not 1 second as before) - this results in a significant speed up (more than 6 packets/second can now be sent, in optimal conditions).
+
+New features:
+1. POE support (Full IPv4 support).
+2. New modules concept. Currently 2 modules are supported: The raw data module & the anomaly detection module.
+3. Schedule reporting which is internal to the iCOMOX (no external SetConfiguration commands are required now) is now supported with interval in minutes, and number of repetitions beyond the first (for any non alert reports).
+4. Now transmitting the reports & saving the reports to the SD card are seperated functions which can be individually configured.
+5. Now the local time since 1.1.1970 (it is NOT the Linux epoch as it is not in UTC time zone) can be configured in the iCOMOX, so the date/time of the files created in the SD card is correct.
+6. sCOMOX_OUT_MSG_SetConfiguration changed to support multiple modules, local time/date, and the other new features, as well as to support selective change of the configuration.  
+7. Supports ADXL362 (currently only in the raw data module).
+8. Supports ADXL1002 (if applicable, currently only in the raw data module).
+9. Added timestamp to each report message.
+
+Suggestions for new features:
+1. There is no checksum protection in the protocol messages.
+2. Add watchdog timer and distribute a "release" version (instead of a "debug" one)
+3. Check the IPv6 support in the POE, and add it in the NB-IOT.
+4. Adding TLS layer to the POE & NB-IOT.
+
+Python:
+Known issues:
+None
+
+Solved issues:
+1. Changes of the current iCOMOX list in the dongles does not cause disturbing of the ongoing SMIP message anymore, but full supoort of multiple iCOMOX is postponed to the next patch (2.7.1).  
+2. Some minor fix in the way that errors are handled in the TCP/IP loop.
+
+Software modifications (code simplification):
+1. Supports the new modules structure of the iCOMOX.
+2. Supports providing local time in seconds since 1.1.1970.
+3. Supports the new internal schedule reporting of the iCOMOX, and removed the external one.
+4. Partially (in order to not confuse customers) supports the selective change of the configuration.
+5. Supports reading/programmming/verifying EEPROM of both NB-IOT & POE.
+6. The synchronous speed estimator has been changed: now it first estimates the noise floor by taking the power density which is quantile(0.25) of the PSD, then it searches the peak of the PSD of the zero mean time series, and if it is higher than 20dB, then it estimates the exact peak frequency as the maximum of a parabola determined by the point found in the peak search and its 2 nearby neighbours.
+7. Now when the GUI compares the version of itself and the iCOMOX (version X.Y.Z) - it only checks that X & Y match.
+8. Adding visible information of the Unique ID & Name of the selected iCOMOX.
+9. Supports ADXL1002 (although its graph is intentionally not visible).
+10. Support ADXL362.
+11. Icon and PNG files are now stored inside the EXE.
+12. Added requirements.txt file for easy Python installation of them in the PyCharm IDE.
+
+****************************************
+* Changes from version 2.5.9 to 2.5.11 *
+****************************************
+MCU:
+Known issues:
+1. Sometimes there is NACK when tries to access the magnetometer.
+2. Sometimes the magnetometer in the Z axis provides a saturation value.
+3. Can't work with the 26MHz crystal in the micro-controller (this problem is limited to the iCOMOX-SMIP).
+
+Solved issues:
+1. USB mode, iCOMOX did not repond when sensors data are transmitted. It was due to lack of call to ProcessMessages() in this path.
+2. Fixed the LEDs logic.
+
+New features:
+1. NB-IOT support.
+2. SD card files names modified to reflect date & time provided by the server. Their creation date & time is proper now, too.
+3. ADXL356 sensor data - reduced back to 3611Hz, single message for all the 3 channels.
+4. Removing the LEDs state from the iCOMOX configuration.
+
+Suggestions for new features:
+1. There is no checksum protection in the protocol messages.
+2. Add watchdog timer and distribute a "release" version (insted of a "debug" one)
+
+Python:
+Known issues:
+1. Currently the SMIP option is frozen. It is done for supporting different ADXL356 report for SMIP & NB-IOT.
+2. When more than a single iCOMOX is connected via SMIP channel, it may disturb the GUI (although the GUI continues to receive & display sensors data properly).
+
+Solved issues:
+1. Better support of SD card file creation. 
+
+Software modifications (code simplification):
+1. NB-IOT (& future POE) support
+2. Multi-iCOMOX support (right now only for TCP/IP)
+3. Added modifications of iCOMOX configuration "on the fly", including turning on & off the vibration motor.
+
+***************************************
+* Changes from version 2.5.7 to 2.5.9 *
+***************************************
+MCU:
+Known issues:
+1. Sometimes there is NACK when tries to access the magnetometer.
+2. Sometimes the magnetometer in the Z axis provides a saturation value.
+3. Can't work with the 26MHz crystal in the micro-controller.
+
+Solved issues:
+1. Sometimes USB connection attempt fails. It is due to ADC "interrupts storm" (Silicon bug in the ADuCM4050 that was probably not solved in rev. 01). The solution uses the watchdog to disable the ADC interrupt in case it is failed to be disabled by the driver.
+2. In the Excel sheet, the units of the IM69D130 were mistakenly "dB SPL". It was corrected to "SPL".
+3. The ProcessMessages() was moved out of the UART RX interrupt socket.
+
+New features:
+1. SD card support was added
+2. Started to arrange the project files tree structure to support 3 separated branches of SMIP, NB-IOT & POE
+
+Suggestions for new features:
+4. There is no checksum protection in the protocol messages.
+
+Python:
+Known issues:
+1. When more than a single iCOMOX is connected via SMIP channel, it may disturb the GUI (although the GUI continues to receive & display sensors data properly).
+
+Solved issues:
+1. The "dB SPL" title in the Excel ADXL356 sheet was changed to "SPL"
+2. The term ADXL356B was changed to ADXL356, everywhere (The ADXL356C is assembled in the iCOMOX).
+3. Updating common.app.statisticsLogger.update_statistics() for microphone data has been done with the spectrum instead of the time domain data.
+
+Software modifications (code simplification):
+1. Added SD card support
+
+***************************************
+* Changes from version 2.5.5 to 2.5.7 *
+***************************************
+MCU:
+Known issues:
+1. Sometimes USB connection attempt fails.
+2. There is a report about graphs that stopped to be updated during a continuous operation in USB mode.
+3. Sometimes there is NACK when tries to access the magnetometer.
+4. Sometimes the magnetometer in the Z axis provides a saturation value.
+5. Can't work with the 26MHz crystal in the micro-controller.
+
+Solved issues:
+1. Now the iCOMOX returns board version in the Hello message of (major=0, minor=0), in order to decouple the firmware version from the board version (In the future, the board version will be saved on a separate memory IC).
+2. The functions for managing the flash IC (IS25LP128) are now succesfully tested, and can be used by users.
+3. During the magnetometer & thermometer (I2C) initializations, a watchdog was added to avoid driver hang up.
+
+Suggestions for new features:
+1. There is no checksum protection in the protocol messages.
+
+Python:
+Known issues:
+1. When more than a single iCOMOX is connected via SMIP channel, it disturbs the GUI.
+
+Solved issues:
+1. The "schedule" was resumed and fixed (now it does not suspend the application). Now it also supports a fraction of hours & minutes instead of integers only.
+2. Timestamps were added to the Excel sheets in the beginning of each batch, with "nano-second" resolution - as well as better structure of the columns.
+3. The microphone sampling rate & power estimate was fixed.
+4. The GUI main window is not shown until the application finish to draw it and centralize it.
+5. In the "Information" tabsheet, now it does not display board version if it gets a (major=0, minor=0) value from the iCOMOX.
+6. The window which is displayed before the GUI, is now automatically turns itself on when the GUI appears.
+7. Progressbar was added inside the statusbar in SMIP mode, to indicate the number of received & need to be received packets.
+8. The name of the incoming message in SMIP was added to the message that appears in the statusbar, regarding the received packet number.
+9. Y axis titles of all the sensors graphs were fixed to amplitude units: value/sqrt(Hz).
+
+Software modifications (code simplification):
+1. Software version control is centralized now.
+2. Sampling rate of various sensors is centralized now (needed both by the code which creates the Excel sheets & the code that displays the sensors graphs)
+3. "pywin32" library was added, for signaling the initial display to close itself, and in order to better centralize the GUI window.
+4. Resuming a single byte index for SMIP packets.
+5. SPI base function is now used as ADI recommended to call their driver function adi_spi_MasterReadWrite(): separate call for write & read operations.
+
+***************************************
+* Changes from version 2.5.0 to 2.5.5 *
+***************************************
+
+MCU:
+Known issues:
+1. Sometimes USB connection attempt fails.
+2. There is a report about graphs that stopped to be updated during a continuous operation in USB mode.
+3. Sometimes there is NACK when tries to access the magnetometer.
+4. Sometimes the magnetometer in the Z axis provides a saturation value.
+5. Can't work with the 26MHz crystal in the micro-controller.
+
+Solved issues:
+1. Sometimes the iCOMOX stops to transmit (not clear yet if it gets a command to stop deliver the reports messages from the GUI Monitor or stops due to firmware decision): We think it is a result of Silicon Anomaly 21000024 in the MCU ADC which was "solved" by the WDT in interrupt mode: when triggered it clears the DONE bits in the ADC.STAT register.
+2. TMRx peripheral are now properly configured, from the LFXTAL
+3. Sometimes the SMIP stops to respond when it receives information. Reinitialization of the SMIP interface solves the halt problem.
+4. Added bootloader field for the sCOMOX_OUT_MSG_Reset. Currently it does nothing.
+5. Change the structure of the sCOMOX_IN_MSG_Hello, which now contains BIT information & official version (major, minor, patch) information.
+6. ADXL356B sensor data has been significantly compressed, but now we sends 8000 samples for each axis, instead of 2000.
+7. ADXL356B sampling rate has been significantly increased to ~48.3KSPS, to get rid of aliasing.
+8. BMM150 sensor data has been reduced, as we don't send the temperature data (because we use them to compensate the magnetic field readings).
+9. BMM150 sensor data sampling rate is now more accurate than before (333.3 SPS)
+
+Suggestions for new features:
+1. There is no checksum protection in the protocol messages.
+2. Remove the USB_IND GPIO check before transmitting to the USB.
+
+Python:
+Known issues:
+1. When more than a single iCOMOX is connected via SMIP channel, it disturbs the GUI.
+
+Solved issues:
+1. There is a report about graphs that stopped to be updated during a continuous operation in USB mode (in slow PCs) due to congestion of the data in the ping pong buffer. Solution was to allocate a ping pong buffer for each sensor.
+2. Now changing the displayed axis of the accelerometer and magnetic sensors, results in immediate modifications of the graphs. The FFT data for all the axis are now computed when a report message is processed.
+3. Clicking on "Connect" button when only the thermometer was selected results in "Please select at least one sensor" error dialog.
+4. In "Configuration" tabsheet, "Save to File" group, selecting "Temperature" alone did not enable the "Start" button.
+5. When clicking on "connect" for the SMIP mode, the text in the combobox entry that holds the mote ID was not automatically erased.
+6. Parameter "duration_of_break_us" of the constructor of class "class_iCOMOX_Communication" expected to get the time data in seconds and not in micro-seconds, as its name implies. Now it expects to get the value in units of micro-seconds.
+7. Duration of BREAK parameter was lengthen to 1000usec instead of 30usec - which in principle was too short for baud rate of 125000bps.
+8. Now the thermometer display does not show 0°C as a default temperature.
+9. Labels and units have been added to the Excel worksheet.
+10. Date & time in the worksheet are now added in different column than the data (this will make it easier to generate graphs)
+11. Acceleromter analysis has been modified to match the new sampling rate of the ADXL356B.
+12. Magnetometer analysis has been modified to match the new sampling rate of the BMM150.
+
+Software modifications (code simplification):
+1. The PlotFFT, speedometer and thermometers classes are now implemented in separated .py files.
+2. Added functions for decomposing IN_MSG_xxx fields in iCOMOX_messages.py
+3. Added bootloader field for the sCOMOX_OUT_MSG_Reset. Currently it does nothing.
+4. Change the structure of the sCOMOX_IN_MSG_Hello, which now contains BIT information & official version (major, minor, patch) information.
+
+Suggestions for new features:
+1. Adding checkboxes for choosing between linear and logarithmic axis in the graphs
+
+Added new features:
+1. Information tabsheet was added in order to provide the hardware and software versions of the iCOMOX and the dongle.
+2. StatusBar messages when received SMIP packet has been modified to include the maximum number of packets in the message, and it now adds 1 to the actual packet ID.
+

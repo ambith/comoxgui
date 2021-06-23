@@ -1,0 +1,40 @@
+1. Installing the latest python 3.7.4
+2. Enter command prompt as administrator
+3. Creating dir "iCOMOMX_GUI_Suitcase - 2.5.7" under C:\Projects\iCOMOX\Scripts
+cd C:\Projects\iCOMOX\Scripts
+mkdir "iCOMOX_GUI_Suitcase - 2.5.7"
+
+4. Goto inside the newly created "iCOMOX_GUI_Suitcase - 2.5.7" folder
+cd "iCOMOX_GUI_Suitcase - 2.5.7"
+
+5. C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m venv venv_37
+6. Goto inside the newly created "venv_37\Scripts" folder
+cd venv_37\Scripts
+
+7. activate.bat
+
+8. Return to the project main folder "iCOMOX_GUI_Suitcase - 2.5.7"
+cd ../..
+
+9. C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install --upgrade pip
+
+10. Download & install pysinstaller for developers:
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+
+11. Install libraries:
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install Pillow
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install tk_tools
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install pyserial
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install numpy
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install matplotlib
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install scipy
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install iotc
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install requests
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install openpyxl
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\python.exe -m pip install pywin32
+
+12. Compile the scripts:
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\Scripts\pyinstaller.exe --hidden-import=PIL --hidden-import=tkinter --hidden-import=pyserial --hidden-import=numpy --hidden-import=matplotlib --hidden-import=scipy --hidden-import=iotc --onefile iCOMOX_Monitor_Suitcase_2_5_1.py
+
+13. Add the "-w" to the compile command line to remove the console window
+C:\Users\kobi.t\AppData\Local\Programs\Python\Python37-32\Scripts\pyinstaller.exe -w --hidden-import=PIL --hidden-import=tkinter --hidden-import=pyserial --hidden-import=matplotlib --hidden-import=numpy --hidden-import=scipy --hidden-import=iotc --onefile iCOMOX_Monitor_Suitcase_2_5_1.py
