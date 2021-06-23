@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+        stages {
+        stage('Tardid') {
+            steps {
+                echo 'Sample Project Tardid'
+            }
+        }
+        stage('GIT HUB') {
+            steps {
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
+extensions: [], userRemoteConfigs: [[credentialsId: 'edab9fee-664f-4433-b2e9-a72304915e83', 
+url: 'https://github.com/ambith/comoxgui.git']]])
+            }
+        }
+        stage ("compile package the code") {
+                steps {
+                   sh "mvn clean package"
+                }
+            }
+        
+        }
+    }
